@@ -137,18 +137,23 @@ export type GetFunctionResultType<
     : ClarityAbiFunction,
 > = InferClarityAbiType<TFunction['outputs']['type']>;
 
+export type ExtractFunctionsByVisibility<
+  Functions extends readonly ClarityAbiFunction[],
+  V extends ClarityAbiFunction['access'],
+> = Extract<Functions[number], {access: V}>;
+
 export type InferFunctionName<
   Functions extends
     | readonly ClarityAbiFunction[]
     | readonly unknown[] = readonly ClarityAbiFunction[],
   FN extends string | undefined = string,
   V extends ClarityAbiFunction['access'] = ClarityAbiFunction['access'],
-> = Functions extends ClarityAbiFunction[]
-  ? keyof GetFunctionsByVisibility<Functions, V> extends infer FunctionNames
+> = Functions extends readonly ClarityAbiFunction[]
+  ? ExtractFunctionsByVisibility<Functions, V>['name'] extends infer FunctionNames
     ?
-        | FunctionNames
-        | (FN extends FunctionNames ? FN : never)
-        | (Functions extends ClarityAbiFunction[] ? string : never)
+        // | FunctionNames
+        | (FN extends FunctionNames ? FN : FunctionNames)
+        | ((readonly ClarityAbiFunction[]) extends Functions ? string : never)
     : never
   : FN;
 

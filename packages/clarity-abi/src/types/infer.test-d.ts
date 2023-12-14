@@ -45,8 +45,7 @@ test('infer readonly function type', () => {
 
   const fn = null as unknown as InferFunctionName<
     typeof SIP010TraitABI.functions,
-    'get-balance',
-    'read_only'
+    'get-balance'
   >;
   void fn;
 
