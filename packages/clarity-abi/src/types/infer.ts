@@ -140,7 +140,7 @@ export type GetFunctionResultType<
 export type ExtractFunctionsByVisibility<
   Functions extends readonly ClarityAbiFunction[],
   V extends ClarityAbiFunction['access'],
-> = Extract<Functions[number], {access: V}>;
+> = Extract<Functions[number], { access: V }>;
 
 export type InferFunctionName<
   Functions extends
@@ -149,11 +149,14 @@ export type InferFunctionName<
   FN extends string | undefined = string,
   V extends ClarityAbiFunction['access'] = ClarityAbiFunction['access'],
 > = Functions extends readonly ClarityAbiFunction[]
-  ? ExtractFunctionsByVisibility<Functions, V>['name'] extends infer FunctionNames
+  ? ExtractFunctionsByVisibility<
+      Functions,
+      V
+    >['name'] extends infer FunctionNames
     ?
-        // | FunctionNames
-        | (FN extends FunctionNames ? FN : FunctionNames)
-        | ((readonly ClarityAbiFunction[]) extends Functions ? string : never)
+        | FunctionNames
+        | (FN extends FunctionNames ? FN : never)
+        | (readonly ClarityAbiFunction[] extends Functions ? string : never)
     : never
   : FN;
 
