@@ -19,7 +19,7 @@ import type {
   ClarityAbiVariable,
 } from './abi.js';
 import type { HexString, TContractPrincipal, TPrincipal } from './common.js';
-import type { MergeUnion } from './utils.js';
+import type { MergeUnion, Narrow } from './utils.js';
 
 type InternalInferClarityAbiTypeTuple<
   T extends ClarityAbiTypeTuple['tuple'],
@@ -113,37 +113,68 @@ export type GetFunctionByName<
   : never;
 
 export type GetFunctionArgsType<
-  Functions extends readonly ClarityAbiFunction[],
-  V extends ClarityAbiFunction['access'],
-  FN extends keyof GetFunctionsByVisibility<Functions, V>,
-  TFunction extends ClarityAbiFunction = GetFunctionByName<Functions, FN, V>,
+  Functions extends
+    | readonly ClarityAbiFunction[]
+    | readonly unknown[] = readonly ClarityAbiFunction[],
+  FN extends string = string,
+  V extends ClarityAbiFunction['access'] = 'read_only' | 'public',
+  TFunction extends ClarityAbiFunction = Functions extends
+    | readonly ClarityAbiFunction[]
+    ? GetFunctionByName<Functions, FN, V>
+    : ClarityAbiFunction,
   TArgs = InferClarityAbiTypeTuple<TFunction['args']>,
 > = TArgs extends never ? never : {} extends TArgs ? {} : { args: TArgs };
 
 export type GetFunctionResultType<
-  Functions extends readonly ClarityAbiFunction[],
-  V extends ClarityAbiFunction['access'],
-  FN extends keyof GetFunctionsByVisibility<Functions, V>,
-  TFunction extends ClarityAbiFunction = GetFunctionByName<Functions, FN, V>,
+  Functions extends
+    | readonly ClarityAbiFunction[]
+    | readonly unknown[] = readonly ClarityAbiFunction[],
+  FN extends string = string,
+  V extends ClarityAbiFunction['access'] = 'read_only' | 'public',
+  TFunction extends ClarityAbiFunction = Functions extends
+    | readonly ClarityAbiFunction[]
+    ? GetFunctionByName<Functions, FN, V>
+    : ClarityAbiFunction,
 > = InferClarityAbiType<TFunction['outputs']['type']>;
 
+export type InferFunctionName<
+  Functions extends
+    | readonly ClarityAbiFunction[]
+    | readonly unknown[] = readonly ClarityAbiFunction[],
+  FN extends string | undefined = string,
+  V extends ClarityAbiFunction['access'] = ClarityAbiFunction['access'],
+> = Functions extends ClarityAbiFunction[]
+  ? keyof GetFunctionsByVisibility<Functions, V> extends infer FunctionNames
+    ?
+        | FunctionNames
+        | (FN extends FunctionNames ? FN : never)
+        | (Functions extends ClarityAbiFunction[] ? string : never)
+    : never
+  : FN;
+
 export type InferReadonlyCallParameterType<
-  ABI extends ClarityAbi,
-  FN extends keyof GetFunctionsByVisibility<ABI['functions'], 'read_only'>,
+  Functions extends
+    | readonly ClarityAbiFunction[]
+    | readonly unknown[] = readonly ClarityAbiFunction[],
+  FN extends string = string,
 > = {
+  abi: Narrow<Functions>;
+  functionName: InferFunctionName<Functions, FN, 'read_only'>;
   sender?: TPrincipal;
   contract: TContractPrincipal;
   stacksEndpoint?: string;
   indexBlockHash?: HexString;
   timeout?: number;
-} & (ABI extends ClarityAbi
-  ? GetFunctionArgsType<ABI['functions'], 'read_only', FN>
+} & (Functions extends readonly ClarityAbiFunction[]
+  ? GetFunctionArgsType<Functions, FN, 'read_only'>
   : {});
 
 export type InferReadonlyCallResultType<
-  ABI extends ClarityAbi,
-  FN extends keyof GetFunctionsByVisibility<ABI['functions'], 'read_only'>,
-> = GetFunctionResultType<ABI['functions'], 'read_only', FN>;
+  ABI extends ClarityAbi | unknown = ClarityAbi,
+  FN extends string = string,
+> = ABI extends ClarityAbi
+  ? GetFunctionResultType<ABI['functions'], FN, 'read_only'>
+  : unknown;
 
 export type GetMapNames<Maps extends readonly ClarityAbiMap[]> =
   Maps[number]['name'];
