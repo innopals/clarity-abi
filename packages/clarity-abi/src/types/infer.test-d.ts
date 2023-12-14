@@ -8,7 +8,6 @@ import type {
   GetVariableNames,
   GetVariableType,
   InferClarityAbiType,
-  InferFunctionName,
   InferReadonlyCallParameterType,
   InferReadonlyCallResultType,
 } from './infer.js';
@@ -43,32 +42,38 @@ test('infer readonly function type', () => {
     return null as unknown as InferReadonlyCallResultType<Functions, FN>;
   }
 
-  const fn = null as unknown as InferFunctionName<
-    typeof SIP010TraitABI.functions,
-    'get-balance'
-  >;
-  void fn;
-
   const r = callReadonly({
     abi: SIP010TraitABI.functions,
     functionName: 'get-balance',
     contract: 'SP123.456',
-    args: { who: 'SP123' },
+    args: {
+      who: 'SP123',
+    },
   });
-  void r;
 
-  // assertType<
-  //   Promise<
-  //     | {
-  //         type: 'success';
-  //         value: bigint;
-  //       }
-  //     | {
-  //         type: 'error';
-  //         value: null;
-  //       }
-  //   >
-  // >(r);
+  assertType<
+    Promise<
+      | {
+          type: 'success';
+          value: bigint;
+        }
+      | {
+          type: 'error';
+          value: null;
+        }
+    >
+  >(r);
+
+  const someAbi: readonly ClarityAbiFunction[] = SIP010TraitABI.functions;
+  const r2 = callReadonly({
+    abi: someAbi,
+    functionName: 'get-balance',
+    contract: 'SP123.456',
+    args: {
+      who: 'SP123',
+    },
+  });
+  assertType<Promise<unknown>>(r2);
 });
 
 test('infer map key value', () => {

@@ -1,5 +1,4 @@
 import type {
-  ClarityAbi,
   ClarityAbiFunction,
   ClarityAbiMap,
   ClarityAbiType,
@@ -123,7 +122,11 @@ export type GetFunctionArgsType<
     ? GetFunctionByName<Functions, FN, V>
     : ClarityAbiFunction,
   TArgs = InferClarityAbiTypeTuple<TFunction['args']>,
-> = TArgs extends never ? never : {} extends TArgs ? {} : { args: TArgs };
+> = [TArgs] extends [never]
+  ? { args?: unknown }
+  : {} extends TArgs
+  ? {}
+  : { args: TArgs };
 
 export type GetFunctionResultType<
   Functions extends
@@ -135,7 +138,8 @@ export type GetFunctionResultType<
     | readonly ClarityAbiFunction[]
     ? GetFunctionByName<Functions, FN, V>
     : ClarityAbiFunction,
-> = InferClarityAbiType<TFunction['outputs']['type']>;
+  TResult = InferClarityAbiType<TFunction['outputs']['type']>,
+> = [TResult] extends [never] ? unknown : TResult;
 
 export type ExtractFunctionsByVisibility<
   Functions extends readonly ClarityAbiFunction[],
@@ -156,7 +160,7 @@ export type InferFunctionName<
     ?
         | FunctionNames
         | (FN extends FunctionNames ? FN : never)
-        | (readonly ClarityAbiFunction[] extends Functions ? string : never)
+        | (ClarityAbiFunction[] extends Functions ? string : never)
     : never
   : FN;
 
@@ -178,10 +182,12 @@ export type InferReadonlyCallParameterType<
   : {});
 
 export type InferReadonlyCallResultType<
-  ABI extends ClarityAbi | unknown = ClarityAbi,
+  Functions extends
+    | readonly ClarityAbiFunction[]
+    | readonly unknown[] = readonly ClarityAbiFunction[],
   FN extends string = string,
-> = ABI extends ClarityAbi
-  ? GetFunctionResultType<ABI['functions'], FN, 'read_only'>
+> = Functions extends readonly ClarityAbiFunction[]
+  ? GetFunctionResultType<Functions, FN, 'read_only'>
   : unknown;
 
 export type GetMapNames<Maps extends readonly ClarityAbiMap[]> =
