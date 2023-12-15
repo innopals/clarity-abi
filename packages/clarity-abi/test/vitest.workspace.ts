@@ -6,7 +6,10 @@ export default defineWorkspace([
       name: 'clarity-abi',
       environment: 'node',
       setupFiles: [],
-      include: ['./packages/clarity-abi/**/*.test.ts'],
+      include: [
+        './packages/clarity-abi/**/*.test.ts',
+        './packages/clarity-abi/**/*.test-d.ts',
+      ],
     },
   },
 ]);

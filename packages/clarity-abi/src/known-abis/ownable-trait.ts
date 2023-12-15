@@ -1,5 +1,5 @@
 // https://explorer.hiro.so/txid/SP3K8BC0PPEVCV7NZ6QSRWPQ2JE9E5B6N3PA0KBR9.trait-ownable
-export default {
+export default ({
   functions: [
     {
       name: 'set-contract-owner',
@@ -39,4 +39,4 @@ export default {
   non_fungible_tokens: [],
   epoch: 'Epoch2_05',
   clarity_version: 'Clarity1',
-} as const;
+} as const);

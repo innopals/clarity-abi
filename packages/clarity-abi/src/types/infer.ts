@@ -35,67 +35,57 @@ type InternalInferClarityAbiTypeTuple<
     : R
   : R;
 
+/**
+ * Converts {@link ClarityAbiTypeTuple} to corresponding TypeScript object type.
+ *
+ * @param T - {@link ClarityAbiTypeTuple} to convert to TypeScript representations
+ * @returns TypeScript object type
+ */
 export type InferClarityAbiTypeTuple<T extends ClarityAbiTypeTuple['tuple']> =
   MergeUnion<InternalInferClarityAbiTypeTuple<T>>;
 
+/**
+ * Converts {@link ClarityAbiType} to corresponding TypeScript representations.
+ *
+ * @param T - {@link ClarityAbiType} to convert to TypeScript representations
+ * @returns TypeScript object type or primitive types
+ */
 export type InferClarityAbiType<T extends ClarityAbiType> =
   T extends ClarityAbiTypeBuffer
     ? Buffer
     : T extends ClarityAbiTypeStringAscii
-    ? string
-    : T extends ClarityAbiTypeStringUtf8
-    ? string
-    : T extends ClarityAbiTypeResponse
-    ?
-        | {
-            type: 'success';
-            value: InferClarityAbiType<T['response']['ok']>;
-          }
-        | {
-            type: 'error';
-            value: InferClarityAbiType<T['response']['error']>;
-          }
-    : T extends ClarityAbiTypeOptional
-    ? InferClarityAbiType<T['optional']> | null
-    : T extends ClarityAbiTypeTuple
-    ? InferClarityAbiTypeTuple<T['tuple']>
-    : T extends ClarityAbiTypeList
-    ? Array<T['list']['type']>
-    : T extends ClarityAbiTypeUInt128
-    ? bigint
-    : T extends ClarityAbiTypeInt128
-    ? bigint
-    : T extends ClarityAbiTypeBool
-    ? boolean
-    : T extends ClarityAbiTypePrincipal
-    ? TPrincipal | TContractPrincipal
-    : T extends ClarityAbiTypeTraitReference
-    ? string
-    : T extends ClarityAbiTypeNone
-    ? null
-    : never;
-
-type InternalGetFunctionsByVisibility<
-  T extends Readonly<ClarityAbiFunction[]>,
-  V extends ClarityAbiFunction['access'],
-  R = {},
-> = T extends readonly [
-  infer F,
-  ...infer Rest extends readonly ClarityAbiFunction[],
-]
-  ? F extends ClarityAbiFunction
-    ? InternalGetFunctionsByVisibility<
-        Rest,
-        V,
-        F extends { access: V } ? R & Record<F['name'], F> : R
-      >
-    : R
-  : R;
-
-export type GetFunctionsByVisibility<
-  T extends Readonly<ClarityAbiFunction[]>,
-  V extends ClarityAbiFunction['access'],
-> = MergeUnion<InternalGetFunctionsByVisibility<T, V>>;
+      ? string
+      : T extends ClarityAbiTypeStringUtf8
+        ? string
+        : T extends ClarityAbiTypeResponse
+          ?
+              | {
+                  type: 'success';
+                  value: InferClarityAbiType<T['response']['ok']>;
+                }
+              | {
+                  type: 'error';
+                  value: InferClarityAbiType<T['response']['error']>;
+                }
+          : T extends ClarityAbiTypeOptional
+            ? InferClarityAbiType<T['optional']> | null
+            : T extends ClarityAbiTypeTuple
+              ? InferClarityAbiTypeTuple<T['tuple']>
+              : T extends ClarityAbiTypeList
+                ? Array<T['list']['type']>
+                : T extends ClarityAbiTypeUInt128
+                  ? bigint
+                  : T extends ClarityAbiTypeInt128
+                    ? bigint
+                    : T extends ClarityAbiTypeBool
+                      ? boolean
+                      : T extends ClarityAbiTypePrincipal
+                        ? TPrincipal | TContractPrincipal
+                        : T extends ClarityAbiTypeTraitReference
+                          ? string
+                          : T extends ClarityAbiTypeNone
+                            ? null
+                            : never;
 
 export type GetFunctionByName<
   Functions extends readonly ClarityAbiFunction[],
@@ -117,16 +107,16 @@ export type GetFunctionArgsType<
     | readonly unknown[] = readonly ClarityAbiFunction[],
   FN extends string = string,
   V extends ClarityAbiFunction['access'] = 'read_only' | 'public',
-  TFunction extends ClarityAbiFunction = Functions extends
-    | readonly ClarityAbiFunction[]
+  TFunction extends
+    ClarityAbiFunction = Functions extends readonly ClarityAbiFunction[]
     ? GetFunctionByName<Functions, FN, V>
     : ClarityAbiFunction,
   TArgs = InferClarityAbiTypeTuple<TFunction['args']>,
 > = [TArgs] extends [never]
   ? { args?: unknown }
   : {} extends TArgs
-  ? {}
-  : { args: TArgs };
+    ? {}
+    : { args: TArgs };
 
 export type GetFunctionResultType<
   Functions extends
@@ -134,8 +124,8 @@ export type GetFunctionResultType<
     | readonly unknown[] = readonly ClarityAbiFunction[],
   FN extends string = string,
   V extends ClarityAbiFunction['access'] = 'read_only' | 'public',
-  TFunction extends ClarityAbiFunction = Functions extends
-    | readonly ClarityAbiFunction[]
+  TFunction extends
+    ClarityAbiFunction = Functions extends readonly ClarityAbiFunction[]
     ? GetFunctionByName<Functions, FN, V>
     : ClarityAbiFunction,
   TResult = InferClarityAbiType<TFunction['outputs']['type']>,

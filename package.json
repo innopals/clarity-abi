@@ -16,16 +16,16 @@
     "test": "vitest -c ./packages/clarity-abi/test/vitest.config.ts",
     "test:build": "pnpm run --r --parallel test:build",
     "test:cov": "vitest run --coverage -c ./packages/clarity-abi/test/vitest.config.ts",
-    "test:typecheck": "vitest typecheck -c ./packages/clarity-abi/test/vitest.config.ts",
+    "test:typecheck": "vitest --typecheck.only -c ./packages/clarity-abi/test/vitest.config.ts",
     "test:update": "vitest --update",
     "typecheck": "pnpm run --r --parallel typecheck && tsc --noEmit",
     "typecheck:propertyTypes": "pnpm run --r --parallel typecheck --exactOptionalPropertyTypes false && tsc --noEmit --exactOptionalPropertyTypes false"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.2.2",
+    "@biomejs/biome": "1.4.1",
     "@types/node": "^20.10.4",
-    "@vitest/coverage-v8": "0.34.5",
-    "knip": "^3.7.1",
+    "@vitest/coverage-v8": "^1.0.4",
+    "knip": "^3.8.0",
     "publint": "^0.2.6",
     "rimraf": "^5.0.5",
     "simple-git-hooks": "^2.9.0",
@@ -33,7 +33,7 @@
     "typescript@5.1": "npm:typescript@5.1.6",
     "typescript@5.2": "npm:typescript@5.2.2",
     "typescript@5.3": "npm:typescript@5.3.3",
-    "vitest": "^0.34.6"
+    "vitest": "^1.0.4"
   },
   "packageManager": "pnpm@8.12.1",
   "simple-git-hooks": {
