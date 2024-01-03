@@ -88,7 +88,7 @@ export type InferClarityAbiType<T extends ClarityAbiType> =
                 }
               | {
                   type: 'error';
-                  value: InferClarityAbiType<T['response']['error']>;
+                  error: InferClarityAbiType<T['response']['error']>;
                 }
           : T extends ClarityAbiTypeOptional
             ? InferClarityAbiType<T['optional']> | null

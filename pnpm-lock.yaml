@@ -18,8 +18,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(vitest@1.1.1)
       knip:
-        specifier: ^3.9.0
-        version: 3.9.0(@types/node@20.10.6)(typescript@5.0.4)
+        specifier: ^3.10.0
+        version: 3.10.0(@types/node@20.10.6)(typescript@5.0.4)
       publint:
         specifier: ^0.2.7
         version: 0.2.7
@@ -585,7 +585,7 @@ packages:
     resolution: {integrity: sha512-YfcB2QrX+Wx1o6LD1G2Y2fhDhOix/bAY/oAnMpHoNLsKkWIRbt1oKLkIFvxBMzLwAEPqnYWguJrYC+J6i4ywbw==}
     engines: {node: '>=12.17'}
     dependencies:
-      bole: 5.0.9
+      bole: 5.0.10
       ndjson: 2.0.0
     dev: true
 
@@ -953,8 +953,8 @@ packages:
     resolution: {integrity: sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==}
     dev: true
 
-  /bole@5.0.9:
-    resolution: {integrity: sha512-35GeBG6T7GW9VmLDF2IoKAtFCqMjmmq1uICbsICI0pID7ZAyUKlf7dg1wpXmn9GcMKHtg0S19CPMU5yfY3tv+g==}
+  /bole@5.0.10:
+    resolution: {integrity: sha512-5IiUWQ8QRQ8yHf46VPQ7GH3nj0Jy7P4heaENBVmsGfHP1Gtd0wqkvK6C3iHLUMdG3SMFx2DD8FqoIQcnMpdIdQ==}
     dependencies:
       fast-safe-stringify: 2.1.1
       individual: 3.0.0
@@ -1589,8 +1589,8 @@ packages:
       graceful-fs: 4.2.11
     dev: true
 
-  /knip@3.9.0(@types/node@20.10.6)(typescript@5.0.4):
-    resolution: {integrity: sha512-pZgJdC4bSTEU/YT+4Q9uT22HuME+V0h0HT2fsOo0TrW7KY5Ghse+2ngNwOctzUn5LeYQ0eY83Z1DhKDIbe5WkA==}
+  /knip@3.10.0(@types/node@20.10.6)(typescript@5.0.4):
+    resolution: {integrity: sha512-SHofg5RlTzMal2zMCuMGT99lGhD1X5qrqPn1+7+FKr4BiChe5McyTFp1N3PGt4xSrrXhsBgYU8NbrqRAdiVQbA==}
     engines: {node: '>=18.6.0'}
     hasBin: true
     peerDependencies:

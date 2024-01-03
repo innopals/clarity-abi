@@ -25,7 +25,7 @@
     "@biomejs/biome": "1.4.1",
     "@types/node": "^20.10.6",
     "@vitest/coverage-v8": "^1.1.1",
-    "knip": "^3.9.0",
+    "knip": "^3.10.0",
     "publint": "^0.2.7",
     "rimraf": "^5.0.5",
     "simple-git-hooks": "^2.9.0",
@@ -53,7 +53,7 @@
           "**/*.test-d.ts",
           "**/vitest.*.ts"
         ],
-        "ignoreDependencies": ["zod"]
+        "ignoreDependencies": []
       }
     }
   }
