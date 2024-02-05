@@ -7,7 +7,16 @@ import type {
   GetMapValueType,
   GetVariableNames,
   GetVariableType,
+  InferClarityAbiType,
 } from './utils.js';
+
+test('infer abi types', () => {
+  assertType<
+    InferClarityAbiType<{
+      list: { type: { tuple: [{ name: 'a'; type: 'uint128' }] }; length: 200 };
+    }>
+  >([{ a: 1n }]);
+});
 
 test('infer function types', () => {
   assertType<

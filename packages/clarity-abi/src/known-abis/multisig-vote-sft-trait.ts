@@ -1,4 +1,4 @@
-export default ({
+export default {
   functions: [
     {
       name: 'end-proposal',
@@ -149,4 +149,4 @@ export default ({
   non_fungible_tokens: [],
   epoch: 'Epoch2_05',
   clarity_version: 'Clarity1',
-} as const);
+} as const;

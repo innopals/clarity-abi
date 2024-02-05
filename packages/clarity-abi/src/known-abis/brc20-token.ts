@@ -1,4 +1,4 @@
-export default ({
+export default {
   functions: [
     {
       name: 'add-approved-contract',
@@ -570,4 +570,4 @@ export default ({
   non_fungible_tokens: [],
   epoch: 'Epoch24',
   clarity_version: 'Clarity2',
-} as const);
+} as const;

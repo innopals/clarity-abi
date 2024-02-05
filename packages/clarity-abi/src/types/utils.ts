@@ -95,7 +95,7 @@ export type InferClarityAbiType<T extends ClarityAbiType> =
             : T extends ClarityAbiTypeTuple
               ? InferClarityAbiTypeTuple<T['tuple']>
               : T extends ClarityAbiTypeList
-                ? Array<T['list']['type']>
+                ? Array<InferClarityAbiType<T['list']['type']>>
                 : T extends ClarityAbiTypeUInt128
                   ? bigint
                   : T extends ClarityAbiTypeInt128
