@@ -28,12 +28,10 @@ export type ClarityAbiTypeOptional = {
 };
 
 export type ClarityAbiTypeTuple = {
-  tuple: Readonly<
-    {
-      name: string;
-      type: ClarityAbiType;
-    }[]
-  >;
+  tuple: readonly {
+    name: string;
+    type: ClarityAbiType;
+  }[];
 };
 
 export type ClarityAbiTypeList = {
