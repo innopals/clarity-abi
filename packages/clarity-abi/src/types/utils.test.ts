@@ -1,5 +1,6 @@
 import { assertType, test } from 'vitest';
 import ammSwapPoolV11 from '../../test/abis/amm-swap-pool-v1-1.js';
+import type { ClarityAbiFunction } from './abi.js';
 import type {
   GetFunctionByName,
   GetMapKeyType,
@@ -8,6 +9,8 @@ import type {
   GetVariableNames,
   GetVariableType,
   InferClarityAbiType,
+  InferClarityAbiTypeTuple,
+  MergeUnion,
 } from './utils.js';
 
 test('infer abi types', () => {
@@ -55,4 +58,49 @@ test('infer variable type', () => {
   assertType<
     GetVariableType<typeof ammSwapPoolV11.variables, 'contract-owner'>
   >('ST123');
+});
+
+test('infer function args type', () => {
+  type InferFunctionArgsType<
+    Functions extends readonly ClarityAbiFunction[],
+    FunctionName extends string,
+    V extends ClarityAbiFunction['access'] = 'read_only' | 'public',
+    TFunction extends ClarityAbiFunction | never = GetFunctionByName<
+      Functions,
+      FunctionName,
+      V
+    >,
+    TArgs extends
+      | Record<string, unknown>
+      | never = TFunction extends ClarityAbiFunction
+      ? InferClarityAbiTypeTuple<TFunction['args']>
+      : never,
+  > = [TArgs] extends [never]
+    ? { args?: unknown }
+    : {} extends TArgs
+      ? {}
+      : { args: TArgs };
+
+  async function callReadonlyFn<
+    Functions extends readonly ClarityAbiFunction[],
+    FN extends Functions[number]['name'],
+    Args extends InferFunctionArgsType<Functions, FN, 'read_only' | 'public'>,
+  >(_: {
+    abi: Functions;
+    functionName: FN;
+    args: Args extends { args: Record<string, unknown> }
+      ? MergeUnion<Args['args']>
+      : unknown;
+  }) {
+    void _;
+  }
+  callReadonlyFn({
+    abi: ammSwapPoolV11.functions,
+    functionName: 'get-price',
+    args: {
+      factor: 100n,
+      'token-x': 'SP123.456',
+      'token-y': 'SP789.000',
+    },
+  });
 });

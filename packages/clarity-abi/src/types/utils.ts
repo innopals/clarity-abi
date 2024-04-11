@@ -45,7 +45,7 @@ export type Narrow<TType> =
 
 type InternalInferClarityAbiTypeTuple<
   T extends ClarityAbiTypeTuple['tuple'],
-  R = {},
+  R extends Record<string, unknown> = {},
 > = T extends readonly [
   infer F,
   ...infer Rest extends ClarityAbiTypeTuple['tuple'],
@@ -65,7 +65,7 @@ type InternalInferClarityAbiTypeTuple<
  * @returns TypeScript object type
  */
 export type InferClarityAbiTypeTuple<T extends ClarityAbiTypeTuple['tuple']> =
-  MergeUnion<InternalInferClarityAbiTypeTuple<T>>;
+  InternalInferClarityAbiTypeTuple<T>;
 
 /**
  * Converts {@link ClarityAbiType} to corresponding TypeScript representations.
@@ -115,16 +115,18 @@ export type InferClarityAbiType<T extends ClarityAbiType> =
 
 export type GetFunctionByName<
   Functions extends readonly ClarityAbiFunction[],
-  FunctionName,
-  V extends ClarityAbiFunction['access'] = 'public' | 'read_only',
-> = FunctionName extends Functions[number]['name']
-  ? Extract<
-      Functions[number],
-      {
-        name: FunctionName;
-        access: V;
-      }
-    >
+  FunctionName extends Functions[number]['name'],
+  V extends ClarityAbiFunction['access'] = 'read_only' | 'public',
+> = Functions extends readonly [
+  infer F,
+  ...infer Rest extends readonly ClarityAbiFunction[],
+]
+  ? F extends {
+      name: FunctionName;
+      access: V;
+    }
+    ? F
+    : GetFunctionByName<Rest, FunctionName, V>
   : never;
 
 export type ExtractFunctionsByVisibility<
