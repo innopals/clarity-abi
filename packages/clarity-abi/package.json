@@ -1,7 +1,7 @@
 {
   "name": "clarity-abi",
   "description": "Strict TypeScript types for Clarity ABIs",
-  "version": "0.0.20",
+  "version": "0.1.0",
   "license": "MIT",
   "repository": "innopals/clarity-abi",
   "scripts": {
