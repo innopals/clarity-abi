@@ -23,20 +23,21 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
-    "@types/node": "^22.8.6",
-    "@vitest/coverage-v8": "^2.1.4",
-    "knip": "^5.36.0",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "knip": "^5.41.1",
     "publint": "^0.2.12",
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.11.1",
-    "typescript": "5.6.3",
+    "typescript": "5.7.2",
     "typescript@5.1": "npm:typescript@5.1.6",
     "typescript@5.2": "npm:typescript@5.2.2",
     "typescript@5.3": "npm:typescript@5.3.3",
     "typescript@5.4": "npm:typescript@5.4.5",
-    "vitest": "^2.1.4"
+    "typescript@5.6": "npm:typescript@5.6.3",
+    "vitest": "^2.1.8"
   },
-  "packageManager": "pnpm@9.12.3",
+  "packageManager": "pnpm@9.15.1",
   "simple-git-hooks": {
     "pre-commit": "pnpm format && pnpm lint:fix"
   },
